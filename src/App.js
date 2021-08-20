@@ -10,6 +10,7 @@ import About from "./components/department/About";
 import LoginForm from "./pages/Login";
 
 function App() {
+  console.log("test");
   return (
     <Layout>
       <Switch>
