@@ -40,7 +40,7 @@ export default function MovieCard(props) {
           <CardMedia
             className={classes.media}
             image={props.imageCover}
-            title="Boogie"
+            title={props.name}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2" noWrap>

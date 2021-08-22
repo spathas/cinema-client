@@ -62,8 +62,7 @@ export default function CardList() {
   const moveToRightMovies = () => {
     setPointer(pointer + 1);
   };
-  console.log(pointer);
-  console.log(results - 5);
+
   return (
     <Grid
       container

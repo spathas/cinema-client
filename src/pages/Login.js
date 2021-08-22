@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import AuthContext from "../store/auth-context";
 import {
   Container,
   Grid,
@@ -9,36 +10,62 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(() => ({
+  "@global": {
+    body: {
+      overflow: "hidden",
+    },
+  },
   container: {
-    height: "85vh",
+    height: "100vh",
     background:
       " linear-gradient(to top, #ffefba, #ffffff)" /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */,
   },
   gridFrom: {
     "& > *": { marginBottom: "1rem" },
   },
-});
+}));
 
 export default function LoginForm() {
-  const [enteredName, setEnteredName] = useState("");
+  const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
+
+  const authContext = useContext(AuthContext);
 
   const classes = useStyles();
 
-  const nameInputHandler = (e) => {
-    setEnteredName(e.target.value);
+  const emailInputHandler = (e) => {
+    setEnteredEmail(e.target.value);
   };
 
   const passwordInputHandler = (e) => {
     setEnteredPassword(e.target.value);
   };
 
+  const fetchUserData = async () => {
+    const response = await fetch("http://127.0.0.1:3000/api/v1/users/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email: enteredEmail,
+        password: enteredPassword,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      authContext.login(data.token, data.tokenExpiration);
+    }
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(enteredName, enteredPassword);
 
-    setEnteredName("");
+    fetchUserData();
+
+    setEnteredEmail("");
     setEnteredPassword("");
   };
 
@@ -63,17 +90,19 @@ export default function LoginForm() {
               onSubmit={submitHandler}
             >
               <TextField
-                onChange={nameInputHandler}
-                id="username"
-                label="Username"
+                onChange={emailInputHandler}
+                id="email"
+                label="Email"
+                placeholder="Enter your email address"
                 variant="outlined"
                 fullWidth={true}
-                value={enteredName}
+                value={enteredEmail}
               />
               <TextField
                 onChange={passwordInputHandler}
                 id="password"
                 label="Password"
+                placeholder="Enter your password"
                 variant="outlined"
                 fullWidth={true}
                 value={enteredPassword}

@@ -1,8 +1,9 @@
 import { Route, Switch, Redirect } from "react-router-dom";
+
 import "./App.css";
-import Layout from "./components/layout/Layout";
 
 //components
+import Layout from "./components/layout/Layout";
 import MainPage from "./pages/MainPage";
 import Movies from "./pages/Movies";
 import MovieDetails from "./pages/MovieDetails";
@@ -10,7 +11,6 @@ import About from "./components/department/About";
 import LoginForm from "./pages/Login";
 
 function App() {
-  console.log("test");
   return (
     <Layout>
       <Switch>
