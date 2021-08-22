@@ -8,7 +8,7 @@ import MainPage from "./pages/MainPage";
 import Movies from "./pages/Movies";
 import MovieDetails from "./pages/MovieDetails";
 import About from "./components/department/About";
-import LoginForm from "./pages/Login";
+import AuthForm from "./pages/AuthForm";
 
 function App() {
   return (
@@ -27,7 +27,7 @@ function App() {
           <About />
         </Route>
         <Route path="/login">
-          <LoginForm />
+          <AuthForm />
         </Route>
         <Route path="*">
           <Redirect to="/" />

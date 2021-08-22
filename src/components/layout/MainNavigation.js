@@ -1,8 +1,9 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router";
-import AuthContext from "../../store/auth-context";
-
 import { makeStyles } from "@material-ui/core/styles";
+
+//Components
+import AuthContext from "../../store/auth-context";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -45,6 +46,11 @@ export default function MenuAppBar() {
     setAnchorEl(null);
   };
 
+  const logoutHandler = () => {
+    authContext.logout();
+    setAnchorEl(null);
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -66,7 +72,7 @@ export default function MenuAppBar() {
           </Typography>
           {!isLogin && (
             <Button variant="contained" onClick={() => history.push("/login")}>
-              Login
+              Login/Register
             </Button>
           )}
           {isLogin && (
@@ -97,6 +103,7 @@ export default function MenuAppBar() {
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={logoutHandler}>Logout</MenuItem>
               </Menu>
             </div>
           )}

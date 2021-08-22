@@ -15,42 +15,29 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function RegisterForm(props) {
+export default function LoginForm(props) {
   const classes = useStyles();
 
-  const [enteredName, setEnteredName] = useState("");
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
-  const [enteredPasswordConfirmation, setEnteredPasswordConfirmation] =
-    useState("");
 
   const authContext = useContext(AuthContext);
   const history = useHistory();
 
-  const nameInputHandler = (e) => {
-    setEnteredName(e.target.value);
+  const emailInputHandler = (e) => {
+    setEnteredEmail(e.target.value);
   };
 
   const passwordInputHandler = (e) => {
     setEnteredPassword(e.target.value);
   };
 
-  const emailInputHandler = (e) => {
-    setEnteredEmail(e.target.value);
-  };
-
-  const passwordConfirmationInputHandler = (e) => {
-    setEnteredPasswordConfirmation(e.target.value);
-  };
-
   const fetchUserData = async () => {
-    const response = await fetch("http://127.0.0.1:3000/api/v1/users/signup", {
+    const response = await fetch("http://127.0.0.1:3000/api/v1/users/login", {
       method: "POST",
       body: JSON.stringify({
-        name: enteredName,
         email: enteredEmail,
         password: enteredPassword,
-        passwordConfirm: enteredPasswordConfirmation,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -81,19 +68,10 @@ export default function RegisterForm(props) {
       onSubmit={submitHandler}
     >
       <TextField
-        onChange={nameInputHandler}
-        id="name"
-        label="Name"
-        placeholder="Enter your name and surname"
-        variant="outlined"
-        fullWidth={true}
-        value={enteredName}
-      />
-      <TextField
         onChange={emailInputHandler}
         id="email"
         label="Email"
-        placeholder="Enter your Email Address"
+        placeholder="Enter your email address"
         variant="outlined"
         fullWidth={true}
         value={enteredEmail}
@@ -102,19 +80,10 @@ export default function RegisterForm(props) {
         onChange={passwordInputHandler}
         id="password"
         label="Password"
-        placeholder="Enter your Password"
+        placeholder="Enter your password"
         variant="outlined"
         fullWidth={true}
         value={enteredPassword}
-      />
-      <TextField
-        onChange={passwordConfirmationInputHandler}
-        id="passwordConfirmation"
-        label="Password Confirmation"
-        placeholder="Enter your Password one more time"
-        variant="outlined"
-        fullWidth={true}
-        value={enteredPasswordConfirmation}
       />
       <Button
         type="submit"
@@ -123,7 +92,7 @@ export default function RegisterForm(props) {
         color="primary"
         disabled={!enteredEmail || !enteredPassword ? true : false}
       >
-        Ready
+        Submit
       </Button>
       <Button
         className={classes.marginLeft}
@@ -132,7 +101,7 @@ export default function RegisterForm(props) {
         color="default"
         onClick={props.changeFormHandler}
       >
-        I already have an account!
+        Create a new account
       </Button>
     </form>
   );
