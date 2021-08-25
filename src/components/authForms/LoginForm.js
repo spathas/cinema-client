@@ -20,6 +20,7 @@ export default function LoginForm(props) {
 
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
+  const [forgotPassword, setForgotPassword] = useState(false);
 
   const authContext = useContext(AuthContext);
   const history = useHistory();
@@ -47,6 +48,9 @@ export default function LoginForm(props) {
     if (response.ok) {
       const data = await response.json();
       authContext.login(data.token, data.tokenExpiration);
+      history.push("/");
+    } else {
+      setForgotPassword(true);
     }
   };
 
@@ -54,7 +58,6 @@ export default function LoginForm(props) {
     e.preventDefault();
 
     fetchUserData();
-    history.push("/");
 
     setEnteredEmail("");
     setEnteredPassword("");
@@ -103,6 +106,19 @@ export default function LoginForm(props) {
       >
         Create a new account
       </Button>
+      {forgotPassword && (
+        <Button
+          type="submit"
+          variant="contained"
+          size="small"
+          color="secondary"
+          onClick={() => {
+            history.push("/forgotPassword");
+          }}
+        >
+          I forget my password
+        </Button>
+      )}
     </form>
   );
 }

@@ -26,6 +26,7 @@ export default function AuthForm() {
   const createNewAccount = () => {
     setOpenRegisterForm(true);
   };
+
   const loginToAccount = () => {
     setOpenRegisterForm(false);
   };

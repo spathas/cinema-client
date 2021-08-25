@@ -9,6 +9,7 @@ import Movies from "./pages/Movies";
 import MovieDetails from "./pages/MovieDetails";
 import About from "./components/department/About";
 import AuthForm from "./pages/AuthForm";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
   return (
@@ -28,6 +29,12 @@ function App() {
         </Route>
         <Route path="/login">
           <AuthForm />
+        </Route>
+        <Route path="/forgotPassword">
+          <ForgotPassword />
+        </Route>
+        <Route path="/resetPassword">
+          <ForgotPassword />
         </Route>
         <Route path="*">
           <Redirect to="/" />
