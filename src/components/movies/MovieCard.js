@@ -52,13 +52,7 @@ export default function MovieCard(props) {
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button
-            onClick={showDetailHandler}
-            size="large"
-            color="primary"
-            fullWidth={true}
-            variant="contained"
-          >
+          <Button onClick={showDetailHandler} size="large" fullWidth={true}>
             Book now
           </Button>
         </CardActions>

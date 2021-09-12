@@ -7,40 +7,94 @@ import Layout from "./components/layout/Layout";
 import MainPage from "./pages/MainPage";
 import Movies from "./pages/Movies";
 import MovieDetails from "./pages/MovieDetails";
-import About from "./components/department/About";
 import AuthForm from "./pages/AuthForm";
 import ForgotPassword from "./pages/ForgotPassword";
 
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+
+const theme = createTheme({
+  overrides: {
+    MuiCssBaseline: {
+      "@global": {
+        "*::-webkit-scrollbar": {
+          width: "0.4em",
+          height: "0.7em",
+        },
+        "*::-webkit-scrollbar-track": {
+          "-webkit-box-shadow": "inset 0 0 6px #f06292",
+        },
+        "*::-webkit-scrollbar-thumb": {
+          backgroundColor: "#f06292",
+          outline: "5px solid #ad1457",
+        },
+      },
+    },
+    MuiButton: {
+      text: {
+        background: "linear-gradient(45deg, #f06292 30%, #ffb74d 90%)",
+        borderRadius: 3,
+        border: 0,
+        color: "white",
+        height: 48,
+        padding: "0 30px",
+        "&:hover": {
+          transform: "scale(1.02)",
+          boxShadow: "0px 0px 4px 3px rgba(240, 98, 146, .7)",
+        },
+        "&:active": {
+          transform: "scale(1)",
+          boxShadow: "0px 0px 4px 6px rgba(240, 98, 146, .7)",
+        },
+      },
+    },
+  },
+  palette: {
+    divider: "#ffe0b2",
+    primary: {
+      light: "#ffe0b2",
+      main: "#ffb74d",
+      dark: "#ef6c00",
+    },
+    secondary: {
+      light: "#f8bbd0",
+      main: "#f06292",
+      dark: "#ad1457",
+    },
+    dark: "#404040",
+  },
+});
+
 function App() {
   return (
-    <Layout>
-      <Switch>
-        <Route path="/" exact>
-          <MainPage />
-        </Route>
-        <Route path="/movies" exact>
-          <Movies />
-        </Route>
-        <Route path="/movies/:movieId">
-          <MovieDetails />
-        </Route>
-        <Route path="/about">
-          <About />
-        </Route>
-        <Route path="/login">
-          <AuthForm />
-        </Route>
-        <Route path="/forgotPassword">
-          <ForgotPassword />
-        </Route>
-        <Route path="/resetPassword">
-          <ForgotPassword />
-        </Route>
-        <Route path="*">
-          <Redirect to="/" />
-        </Route>
-      </Switch>
-    </Layout>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Layout>
+        <Switch>
+          <Route path="/" exact>
+            <MainPage />
+          </Route>
+          <Route path="/movies" exact>
+            <Movies />
+          </Route>
+          <Route path="/movies/:movieId">
+            <MovieDetails />
+          </Route>
+          <Route path="/auth">
+            <AuthForm />
+          </Route>
+          <Route path="/forgotPassword">
+            <ForgotPassword />
+          </Route>
+          <Route path="/resetPassword">
+            <ForgotPassword />
+          </Route>
+          <Route path="*">
+            <Redirect to="/" />
+          </Route>
+        </Switch>
+      </Layout>
+    </ThemeProvider>
   );
 }
 

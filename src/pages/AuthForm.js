@@ -6,10 +6,8 @@ import LoginForm from "../components/authForms/LoginForm";
 import RegisterForm from "../components/authForms/RegisterForm";
 
 const useStyles = makeStyles(() => ({
-  "@global": {
-    body: {
-      overflow: "hidden",
-    },
+  root: {
+    overflow: "hidden",
   },
   container: {
     height: "100vh",
@@ -42,7 +40,7 @@ export default function AuthForm() {
           justifyContent="center"
         >
           <Grid item className={classes.gridFrom}>
-            <Typography variant="h2" color="primary">
+            <Typography variant="h2">
               {openRegisterForm ? "Register Form" : "Login Form"}
             </Typography>
           </Grid>
