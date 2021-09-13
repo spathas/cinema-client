@@ -3,7 +3,7 @@ import ImageList from "@material-ui/core/ImageList";
 import ImageListItem from "@material-ui/core/ImageListItem";
 import ImageListItemBar from "@material-ui/core/ImageListItemBar";
 import IconButton from "@material-ui/core/IconButton";
-import StarBorderIcon from "@material-ui/icons/StarBorder";
+import StarIcon from "@material-ui/icons/Star";
 
 //Image
 import classicScreen from "../../images/classicScreen.jpg";
@@ -69,7 +69,7 @@ export default function CinemaPlaces() {
               }}
               actionIcon={
                 <IconButton aria-label={`star ${image.id}`}>
-                  <StarBorderIcon className={classes.title} />
+                  <StarIcon className={classes.title} />
                 </IconButton>
               }
             />

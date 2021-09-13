@@ -96,7 +96,7 @@ export default function MenuAppBar(props) {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <AccountCircle />
+                <AccountCircle color="primary" />
               </IconButton>
               <Menu
                 id="menu-appbar"

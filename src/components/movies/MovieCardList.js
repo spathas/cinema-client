@@ -15,6 +15,7 @@ const useStyles = makeStyles({
 
 export default function CardList(props) {
   const [pointer, setPointer] = useState(0);
+  const [slideDirection, setSlideDirection] = useState("left");
 
   const movies = props.movies;
   const results = props.results;
@@ -31,21 +32,25 @@ export default function CardList(props) {
     }
 
     return selectedMovies.map((movie) => (
-      <Grid item md={2} key={movie.id}>
-        <MovieCard
-          name={movie.name}
-          category={movie.category}
-          imageCover={movie.imageCover}
-        />
-      </Grid>
+      <MovieCard
+        key={movie.id}
+        id={movie.id}
+        name={movie.name}
+        category={movie.category}
+        imageCover={movie.imageCover}
+        checked={true}
+        slideDirection={slideDirection}
+      />
     ));
   };
 
   const moveToLeftMovies = () => {
+    setSlideDirection("right");
     setPointer(pointer - 1);
   };
 
   const moveToRightMovies = () => {
+    setSlideDirection("left");
     setPointer(pointer + 1);
   };
 
@@ -65,9 +70,9 @@ export default function CardList(props) {
         <Grid item md={1} className={classes.centeredText}>
           {pointer > 0 && (
             <KeyboardArrowLeftIcon
+              color="secondary"
               onClick={moveToLeftMovies}
               fontSize="large"
-              htmlColor="white"
             />
           )}
         </Grid>
@@ -77,7 +82,7 @@ export default function CardList(props) {
             <KeyboardArrowRightIcon
               onClick={moveToRightMovies}
               fontSize="large"
-              htmlColor="white"
+              color="secondary"
             />
           )}
         </Grid>

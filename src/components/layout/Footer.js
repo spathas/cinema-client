@@ -1,10 +1,11 @@
 import React from "react";
-import { Container, Grid, Typography, Divider } from "@material-ui/core";
+import { Grid, Typography, Divider } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   container: {
+    flexGrow: 1,
     background: theme.palette.dark,
     padding: "3.5rem",
   },
@@ -17,21 +18,21 @@ export default function Footer() {
   const classes = useStyles();
 
   return (
-    <Container maxWidth="xl" className={classes.container}>
+    <div className={classes.container}>
       <Grid
         xl={12}
         container
         justifyContent="space-around"
         alignContent="space-around"
-        spacing="3"
+        spacing={3}
         direction="row"
       >
         <Grid item xl={6}>
           <Grid
             container
-            justifyContent="space-even"
+            justifyContent="space-around"
             alignContent="center"
-            spacing="2"
+            spacing={2}
             direction="column"
           >
             <Grid item xl={12}>
@@ -39,7 +40,7 @@ export default function Footer() {
                 container
                 justifyContent="center"
                 alignContent="center"
-                spacing="2"
+                spacing={2}
                 direction="column"
               >
                 <Grid item xl={12}>
@@ -77,7 +78,7 @@ export default function Footer() {
               container
               justifyContent="center"
               alignContent="center"
-              spacing="2"
+              spacing={2}
               direction="column"
             >
               <Grid item xl={12}>
@@ -93,7 +94,7 @@ export default function Footer() {
             container
             justifyContent="center"
             alignContent="center"
-            spacing="2"
+            spacing={2}
             direction="column"
           >
             <Grid item xl={12}>
@@ -140,6 +141,6 @@ export default function Footer() {
           </Grid>
         </Grid>
       </Grid>
-    </Container>
+    </div>
   );
 }

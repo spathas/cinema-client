@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
+
 import { TextField, Button } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -47,7 +48,7 @@ export default function LoginForm(props) {
 
     if (response.ok) {
       const data = await response.json();
-      authContext.login(data.token, data.tokenExpiration);
+      authContext.login(data.data.user, data.expires);
       history.push("/");
     } else {
       setForgotPassword(true);
