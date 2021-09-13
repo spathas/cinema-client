@@ -1,17 +1,14 @@
 import React from "react";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
 import Zoom from "@material-ui/core/Zoom";
 import Paper from "@material-ui/core/Paper";
+
+import CustomModal from "../utils/CustomModal";
+import BookingStepper from "../booking/BookingStepper";
+import MovieBookSchedule from "../booking/MovieBookSchedule";
 
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   paper: {
     width: "60vw",
     height: "45vh",
@@ -22,33 +19,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MovieBookingModal(props) {
+export default function MovieTrailerModal(props) {
   const classes = useStyles();
+
+  const handleClose = () => {
+    props.handleClose();
+  };
 
   const body = (
     <Zoom in={props.handleOpen} timeout={300}>
       <Paper elevation={5} className={classes.paper}>
-        booking
+        <BookingStepper />
+        <MovieBookSchedule />
       </Paper>
     </Zoom>
   );
 
   return (
     <div>
-      <Modal
-        open={props.handleOpen}
-        onClick={props.handleClose}
-        className={classes.modal}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
+      <CustomModal
+        body={body}
+        handleOpen={props.handleOpen}
+        handleClose={handleClose}
       >
         {body}
-      </Modal>
+      </CustomModal>
     </div>
   );
 }
