@@ -29,8 +29,8 @@ export default function MovieTrailerModal(props) {
   const body = (
     <Zoom in={props.handleOpen} timeout={300}>
       <Paper elevation={5} className={classes.paper}>
-        <BookingStepper />
         <MovieBookSchedule />
+        <BookingStepper />
       </Paper>
     </Zoom>
   );

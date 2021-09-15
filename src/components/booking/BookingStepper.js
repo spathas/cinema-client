@@ -151,25 +151,6 @@ export default function CustomizedSteppers() {
 
   return (
     <div className={classes.root}>
-      <Stepper
-        style={{ background: "transparent" }}
-        alternativeLabel
-        activeStep={activeStep}
-        connector={<ColorlibConnector />}
-      >
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel
-              classes={{
-                label: classes.label,
-              }}
-              StepIconComponent={ColorlibStepIcon}
-            >
-              {label}
-            </StepLabel>
-          </Step>
-        ))}
-      </Stepper>
       <div>
         {activeStep === steps.length ? (
           <div>
@@ -207,6 +188,25 @@ export default function CustomizedSteppers() {
           </div>
         )}
       </div>
+      <Stepper
+        style={{ background: "transparent" }}
+        alternativeLabel
+        activeStep={activeStep}
+        connector={<ColorlibConnector />}
+      >
+        {steps.map((label) => (
+          <Step key={label}>
+            <StepLabel
+              classes={{
+                label: classes.label,
+              }}
+              StepIconComponent={ColorlibStepIcon}
+            >
+              {label}
+            </StepLabel>
+          </Step>
+        ))}
+      </Stepper>
     </div>
   );
 }
