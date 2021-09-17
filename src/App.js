@@ -5,7 +5,7 @@ import "./App.css";
 //components
 import Layout from "./components/layout/Layout";
 import MainPage from "./pages/MainPage";
-import MovieDetails from "./components/movies/MovieDetails";
+import MovieDetails from "./pages/MovieDetails";
 import AuthForm from "./pages/AuthForm";
 import ForgotPassword from "./pages/ForgotPassword";
 

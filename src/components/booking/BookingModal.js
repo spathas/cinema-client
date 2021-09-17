@@ -3,8 +3,7 @@ import Zoom from "@material-ui/core/Zoom";
 import Paper from "@material-ui/core/Paper";
 
 import CustomModal from "../utils/CustomModal";
-import BookingStepper from "../booking/BookingStepper";
-import MovieBookSchedule from "../booking/MovieBookSchedule";
+import BookingStepper from "./BookingStepper";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -29,7 +28,6 @@ export default function MovieTrailerModal(props) {
   const body = (
     <Zoom in={props.handleOpen} timeout={300}>
       <Paper elevation={5} className={classes.paper}>
-        <MovieBookSchedule />
         <BookingStepper />
       </Paper>
     </Zoom>

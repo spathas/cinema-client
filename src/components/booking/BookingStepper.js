@@ -11,6 +11,8 @@ import StepConnector from "@material-ui/core/StepConnector";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
+import MovieBookBody from "./MovieBookBody";
+
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 
 const ColorlibConnector = withStyles({
@@ -115,6 +117,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// Title of modal by step num.
 function getSteps() {
   return ["Select campaign settings", "Create an ad group", "Create an ad"];
 }
@@ -134,7 +137,7 @@ function getStepContent(step) {
 
 export default function CustomizedSteppers() {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(1);
+  const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
 
   const handleNext = () => {
@@ -166,9 +169,10 @@ export default function CustomizedSteppers() {
             <Typography color="primary" className={classes.instructions}>
               {getStepContent(activeStep)}
             </Typography>
+            <MovieBookBody step={activeStep + 1} />
             <div>
               <Button
-                variant="outline"
+                variant="outlined"
                 color="primary"
                 disabled={activeStep === 0}
                 onClick={handleBack}
