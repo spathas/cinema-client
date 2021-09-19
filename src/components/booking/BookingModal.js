@@ -10,7 +10,6 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   paper: {
     width: "60vw",
-    height: "45vh",
     backgroundColor: theme.palette.dark,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),

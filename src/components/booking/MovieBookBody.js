@@ -1,51 +1,53 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 import Grid from "@material-ui/core/Grid";
-import { Card, CardActionArea, CardContent } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
 
-const MovieBookBody = (props) => {
+import BookingTimeCart from "./BookingTimeCart";
+
+const MovieBookBody = () => {
   const [schedules, setSchedules] = useState([]);
+  const [clickedSchedule, setClickedSchedule] = useState();
+
+  const movieId = useParams().movieId;
 
   useEffect(() => {
     fetch(
-      "http://localhost:3000/api/v1/schedules?movie=6041ec97b1e4be12e0023c1e"
+      //queries -> movieid | sort by screeningStart (features from backend [utils-> featuresAPI])
+      `http://localhost:3000/api/v1/schedules?movie=${movieId}&sort=screeningStart`
     )
       .then((response) => response.json())
       .then((data) => {
         setSchedules(data.data.data);
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [movieId]);
 
-  const generateScheduleCard = () =>
+  const selectHandler = (id) => {
+    setClickedSchedule(id);
+  };
+
+  const selectSchedule = () =>
     schedules.map((schedule) => {
-      let displayDay = "Day: " + new Date(schedule.screeningStart).getDate();
-      displayDay =
-        displayDay + "/" + new Date(schedule.screeningStart).getMonth();
-
-      let displayTime = "Time: " + new Date(schedule.screeningStart).getHours();
-
+      let clicked = false;
+      if (schedule.id === clickedSchedule) {
+        clicked = true;
+      }
       return (
-        <Grid item xl={3}>
-          <Card xl={{ maxWidth: 100 }}>
-            <CardActionArea>
-              <CardContent>
-                <Typography>
-                  {schedule.screeningStart}
-                  {displayDay} {displayTime}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
+        <BookingTimeCart
+          key={schedule.id}
+          id={schedule.id}
+          schedule={schedule}
+          clicked={clicked}
+          oneTimeSelect={selectHandler}
+        />
       );
     });
 
   return (
     <Grid container>
       <Grid container item xl={12} spacing={2}>
-        {generateScheduleCard()}
+        {selectSchedule()}
       </Grid>
     </Grid>
   );

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
@@ -14,7 +14,6 @@ const BookingPage = () => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
-    history.push(`/movies/${movieId}/book`);
     setOpen(true);
   };
 
@@ -22,7 +21,6 @@ const BookingPage = () => {
     setOpen(false);
   };
 
-  const history = useHistory();
   const movieId = useParams().movieId;
 
   useEffect(() => {
