@@ -5,6 +5,8 @@ import Paper from "@material-ui/core/Paper";
 import CustomModal from "../utils/CustomModal";
 import BookingStepper from "./BookingStepper";
 
+import { BookingContextProvider } from "../../store/booking-context";
+
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -27,7 +29,9 @@ export default function MovieTrailerModal(props) {
   const body = (
     <Zoom in={props.handleOpen} timeout={300}>
       <Paper elevation={5} className={classes.paper}>
-        <BookingStepper />
+        <BookingContextProvider>
+          <BookingStepper />
+        </BookingContextProvider>
       </Paper>
     </Zoom>
   );

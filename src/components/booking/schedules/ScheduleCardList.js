@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Container, Grid } from "@material-ui/core";
 import KeyboardArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
 
 import ScheduleCard from "./ScheduleCard";
+import BookingContext from "../../../store/booking-context";
 
 import { makeStyles } from "@material-ui/core";
 
@@ -16,15 +17,20 @@ const useStyles = makeStyles({
 export default function CardList(props) {
   const [pointer, setPointer] = useState(0);
   const [slideDirection, setSlideDirection] = useState("left");
-  const [clickedSchedule, setClickedSchedule] = useState();
+  const [clickedSchedule, setClickedSchedule] = useState({});
 
+  const classes = useStyles();
   const schedules = props.schedules;
   const results = props.results;
 
-  const classes = useStyles();
+  const bookingContext = useContext(BookingContext);
 
-  const selectHandler = (id) => {
-    setClickedSchedule(id);
+  useEffect(() => {
+    bookingContext.setScheduleData(clickedSchedule);
+  }, [bookingContext, clickedSchedule]);
+
+  const selectHandler = (schedule) => {
+    setClickedSchedule(schedule);
   };
 
   const cardItemsHandler = () => {
@@ -38,13 +44,12 @@ export default function CardList(props) {
 
     return selectedSchedules.map((schedule) => {
       let clicked = false;
-      if (schedule.id === clickedSchedule) {
+      if (schedule.id === clickedSchedule.id) {
         clicked = true;
       }
       return (
         <ScheduleCard
           key={schedule.id}
-          id={schedule.id}
           schedule={schedule}
           clicked={clicked}
           checked={true}

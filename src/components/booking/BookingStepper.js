@@ -11,7 +11,7 @@ import StepConnector from "@material-ui/core/StepConnector";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
-import MovieBookBody from "./MovieBookBody";
+import ModalBody from "./ModalBody";
 
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 
@@ -170,7 +170,7 @@ export default function CustomizedSteppers() {
             <Typography color="primary" className={classes.instructions}>
               {getStepContent(activeStep)}
             </Typography>
-            <MovieBookBody step={activeStep + 1} />
+            <ModalBody step={activeStep + 1} />
             <div>
               <Button
                 variant="outlined"

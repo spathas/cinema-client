@@ -25,12 +25,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MovieCard(props) {
   const classes = useStyles();
-  const id = props.id;
   const schedule = props.schedule;
   const clicked = props.clicked || false;
 
   const clickHandler = () => {
-    props.onScheduleSelect(id);
+    props.onScheduleSelect(schedule);
   };
 
   const grid = clicked ? classes.gridSelected : classes.gridNonSelected;
@@ -84,3 +83,5 @@ export default function MovieCard(props) {
     </Slide>
   );
 }
+
+// TODO: Parse schedule to booking context

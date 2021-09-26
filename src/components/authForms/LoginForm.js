@@ -48,7 +48,7 @@ export default function LoginForm(props) {
 
     if (response.ok) {
       const data = await response.json();
-      authContext.login(data.data.user, data.expires);
+      authContext.login(data.data.user, data.tokenExpiration);
       history.push("/");
     } else {
       setForgotPassword(true);

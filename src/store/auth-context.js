@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 const AuthContext = createContext({
   user: {},
@@ -8,10 +8,22 @@ const AuthContext = createContext({
   logout: () => {},
 });
 
+const initUser = JSON.parse(localStorage.getItem("user"));
+
 export const AuthContextProvider = (props) => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(initUser);
   const [authExpires, setAuthExpires] = useState(new Date(Date.now()));
   const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(user));
+    if (
+      !!user &&
+      new Date(authExpires).getTime() > new Date(Date.now()).getTime()
+    ) {
+      setIsLogin(true);
+    }
+  }, [user]);
 
   const loginHandler = (innerUser, innerExpires) => {
     setUser(innerUser);
@@ -29,6 +41,7 @@ export const AuthContextProvider = (props) => {
     setUser({});
     setAuthExpires(new Date(Date.now()));
     setIsLogin(false);
+    localStorage.clear();
   };
 
   const contetxtValue = {
