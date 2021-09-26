@@ -1,7 +1,7 @@
-import Grid from "@material-ui/core/Grid";
 import { Card, CardActionArea, CardContent } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -20,14 +20,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function BookingTimeCart(props) {
+export default function BookingScheduleCard(props) {
   const classes = useStyles();
   const id = props.id;
   const schedule = props.schedule;
   const clicked = props.clicked || false;
 
   const clickHandler = () => {
-    props.oneTimeSelect(id);
+    props.onScheduleSelect(id);
   };
 
   const grid = clicked ? classes.gridSelected : classes.gridNonSelected;

@@ -3,11 +3,13 @@ import { useParams } from "react-router-dom";
 
 import Grid from "@material-ui/core/Grid";
 
-import BookingTimeCart from "./BookingTimeCart";
+import BookingScheduleCard from "./BookingScheduleCard";
 
-const MovieBookBody = () => {
+const MovieBookBody = (props) => {
   const [schedules, setSchedules] = useState([]);
   const [clickedSchedule, setClickedSchedule] = useState();
+
+  const step = props.step;
 
   const movieId = useParams().movieId;
 
@@ -34,20 +36,22 @@ const MovieBookBody = () => {
         clicked = true;
       }
       return (
-        <BookingTimeCart
+        <BookingScheduleCard
           key={schedule.id}
           id={schedule.id}
           schedule={schedule}
           clicked={clicked}
-          oneTimeSelect={selectHandler}
+          onScheduleSelect={selectHandler}
         />
       );
     });
 
   return (
     <Grid container>
-      <Grid container item xl={12} spacing={2}>
-        {selectSchedule()}
+      <Grid container direction="row" item xl={12} spacing={2}>
+        {step === 1 && selectSchedule()}
+        {step === 2 && "nothing"}
+        {step === 3 && "nothing"}
       </Grid>
     </Grid>
   );

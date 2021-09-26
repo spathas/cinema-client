@@ -28,6 +28,7 @@ const BookingPage = () => {
       .then((response) => response.json())
       .then((data) => {
         setMovie(data.data.data);
+        console.log(data.data.data);
       })
       .catch((error) => console.warn(error));
   }, [movieId]);

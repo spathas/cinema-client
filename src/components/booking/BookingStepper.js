@@ -119,13 +119,13 @@ const useStyles = makeStyles((theme) => ({
 
 // Title of modal by step num.
 function getSteps() {
-  return ["Select campaign settings", "Create an ad group", "Create an ad"];
+  return ["Select schedule", "Create an ad group", "Create an ad"];
 }
 
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return "Select campaign settings...";
+      return "Select screening time and hall.";
     case 1:
       return "What is an ad group anyways?";
     case 2:
