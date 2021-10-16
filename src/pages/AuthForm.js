@@ -10,7 +10,7 @@ const useStyles = makeStyles(() => ({
     overflow: "hidden",
   },
   container: {
-    height: "100vh",
+    height: "50vh",
     background:
       " linear-gradient(to top, #ffefba, #ffffff)" /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */,
   },

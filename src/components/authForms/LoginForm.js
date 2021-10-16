@@ -20,7 +20,9 @@ export default function LoginForm(props) {
   const classes = useStyles();
 
   const [enteredEmail, setEnteredEmail] = useState("");
+  const [validationEnteredEmail, setValidationEnteredEmail] = useState(true);
   const [enteredPassword, setEnteredPassword] = useState("");
+  const [validationPasswordEmail, setValidationPasswordEmail] = useState(true);
   const [forgotPassword, setForgotPassword] = useState(false);
 
   const authContext = useContext(AuthContext);
@@ -48,15 +50,32 @@ export default function LoginForm(props) {
 
     if (response.ok) {
       const data = await response.json();
-      authContext.login(data.data.user, data.tokenExpiration);
+      authContext.login(data.data.user, data.expires);
       history.push("/");
     } else {
       setForgotPassword(true);
+      setValidationEnteredEmail(false);
+      setValidationPasswordEmail(false);
     }
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
+
+    //Validation for email input
+    if (enteredEmail.trim().length < 3 && !enteredEmail.includes(["@", "."])) {
+      setValidationEnteredEmail(false);
+      return;
+    }
+
+    //Validation for password input
+    if (enteredPassword.trim().length < 4) {
+      setValidationPasswordEmail(false);
+      return;
+    }
+
+    setValidationEnteredEmail(true);
+    setValidationPasswordEmail(true);
 
     fetchUserData();
 
@@ -72,6 +91,7 @@ export default function LoginForm(props) {
       onSubmit={submitHandler}
     >
       <TextField
+        error={!validationEnteredEmail}
         onChange={emailInputHandler}
         id="email"
         label="Email"
@@ -81,9 +101,11 @@ export default function LoginForm(props) {
         value={enteredEmail}
       />
       <TextField
+        error={!validationPasswordEmail}
         onChange={passwordInputHandler}
         id="password"
         label="Password"
+        type="password"
         placeholder="Enter your password"
         variant="outlined"
         fullWidth={true}

@@ -9,24 +9,27 @@ const AuthContext = createContext({
 });
 
 const initUser = JSON.parse(localStorage.getItem("user"));
+const initExpired = JSON.parse(localStorage.getItem("expireToken"));
 
 export const AuthContextProvider = (props) => {
   const [user, setUser] = useState(initUser);
-  const [authExpires, setAuthExpires] = useState(new Date(Date.now()));
+  const [authExpires, setAuthExpires] = useState(initExpired);
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("expireToken", JSON.stringify(authExpires));
     if (
       !!user &&
       new Date(authExpires).getTime() > new Date(Date.now()).getTime()
     ) {
       setIsLogin(true);
     }
-  }, [user]);
+  }, [user, authExpires, isLogin]);
 
   const loginHandler = (innerUser, innerExpires) => {
     setUser(innerUser);
+    console.log(innerUser);
     setAuthExpires(new Date(innerExpires).getTime());
 
     if (

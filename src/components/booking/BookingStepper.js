@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+
+//MUI
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import Stepper from "@material-ui/core/Stepper";
@@ -11,8 +14,14 @@ import StepConnector from "@material-ui/core/StepConnector";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
+//COMPONETS
 import ModalBody from "./ModalBody";
+//CONTEXT
+import AuthContext from "../../store/auth-context";
+import BookingContext from "../../store/booking-context";
+import CustomAlertContext from "../../store/customAlert-context";
 
+//STYLES
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 
 const ColorlibConnector = withStyles({
@@ -139,10 +148,37 @@ export default function CustomizedSteppers() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
 
-  const steps = getSteps();
+  const authContext = useContext(AuthContext);
+  const bookingContext = useContext(BookingContext);
+  const customAlertContext = useContext(CustomAlertContext);
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  const steps = getSteps();
+  const history = useHistory();
+  const location = useLocation();
+
+  const handleNext = async () => {
+    if (!authContext.user.role) {
+      const alertDelay = 2000;
+
+      customAlertContext.setAlert("authRequired", alertDelay);
+
+      setTimeout(() => {
+        if (location.pathname !== "/auth") {
+          // console.log("test");
+          history.push("/auth");
+        }
+      }, alertDelay);
+
+      return;
+    }
+    //Check if schedule selected.
+    bookingContext.scheduleData.id
+      ? setActiveStep((prevActiveStep) => prevActiveStep + 1)
+      : alert("Please select a schedule!");
+
+    //Check if seat/s selected
+
+    //
   };
 
   const handleBack = () => {
@@ -159,7 +195,7 @@ export default function CustomizedSteppers() {
         {activeStep === steps.length ? (
           <div>
             <Typography color="primary" className={classes.instructions}>
-              All steps completed - you&apos;re finished
+              All steps completed - your booking is ready.
             </Typography>
             <Button onClick={handleReset} className={classes.button}>
               Reset

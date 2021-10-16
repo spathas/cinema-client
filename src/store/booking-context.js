@@ -2,17 +2,16 @@ import { createContext, useState } from "react";
 
 const BookingContext = createContext({
   user: {},
-  schedule: {},
+  scheduleData: {},
   seats: "",
   createdAt: "",
   setScheduleData: () => {},
 });
 
 export const BookingContextProvider = (props) => {
-  const [user] = useState({})[0];
-  const [schedule, setSchedule] = useState({})[0];
-  const [seats] = useState("")[0];
-  const [createdAt] = useState(new Date(Date.now()))[0];
+  const [schedule, setSchedule] = useState({});
+  const [seats, setSeats] = useState("");
+  const [createdAt, setCreateAt] = useState(new Date(Date.now()));
 
   //Setters
   const setScheduleData = (data) => {
@@ -20,8 +19,7 @@ export const BookingContextProvider = (props) => {
   };
 
   const contetxtValue = {
-    user,
-    schedule,
+    scheduleData: schedule,
     seats,
     createdAt,
     setScheduleData,
@@ -35,5 +33,3 @@ export const BookingContextProvider = (props) => {
 };
 
 export default BookingContext;
-
-//TODO: Dont forget to refactor states when you will start with booking again

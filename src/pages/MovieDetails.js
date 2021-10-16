@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
+//MUI
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-
 import PaperLabel from "../components/utils/PaperLabel";
 import MovieTrailerImage from "../components/movies/MovieTrailerImage";
+
+//COMPONETS
 import BookingModal from "../components/booking/BookingModal";
 
 const BookingPage = () => {

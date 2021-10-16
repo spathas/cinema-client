@@ -5,6 +5,7 @@ import Paper from "@material-ui/core/Paper";
 import CustomModal from "../utils/CustomModal";
 import BookingStepper from "./BookingStepper";
 
+//CONTEXTES
 import { BookingContextProvider } from "../../store/booking-context";
 
 import { makeStyles } from "@material-ui/core/styles";

@@ -1,7 +1,13 @@
 import React from "react";
+
+//MUI
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 
+//CONTEXTES
+import { CustomAlertContextProvider } from "../../store/customAlert-context";
+
+//STYLES
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +37,9 @@ export default function CustomModal(props) {
           timeout: 500,
         }}
       >
-        {body}
+        <>
+          <CustomAlertContextProvider>{body}</CustomAlertContextProvider>
+        </>
       </Modal>
     </div>
   );

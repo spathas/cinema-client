@@ -33,14 +33,14 @@ const theme = createTheme({
     MuiButton: {
       text: {
         background: "linear-gradient(45deg, #f06292 50%, #ffb74d 90%)",
-        boxShadow: "3px 3px 10px 0px rgba(0, 0, 0, .7)",
+        boxShadow: "-1px -1px 6px 1px rgba(0, 0, 0, .5)",
         borderRadius: 3,
         border: 0,
         color: "white",
         height: 48,
         padding: "0 30px",
         "&:hover": {
-          transform: "scale(0.98)",
+          transform: "scale(0.99) translateY(-1px)",
           boxShadow: "0px 0px 12px 4px rgba(240, 98, 146, .7)",
         },
       },

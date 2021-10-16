@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   container: {
+    height: "50vh",
     flexGrow: 1,
     background: theme.palette.dark,
     padding: "3.5rem",
