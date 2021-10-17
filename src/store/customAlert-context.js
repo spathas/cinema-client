@@ -61,10 +61,11 @@ export const CustomAlertContextProvider = (props) => {
 
           if (trigger) {
             interval = setInterval(() => {
-              const timestamp = Math.round(
+              let timestamp = Math.round(
                 ((Date.now() - dateNow) / timer) * 100
               );
-              setProgress(timestamp + 1);
+              timestamp = timestamp + timestamp * 0.1 + 1; // To fix async delay i increase 10% the progress value
+              setProgress(timestamp);
             }, timer / 100);
             timeout = setTimeout(() => {
               setTrigger(false);
