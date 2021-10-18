@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
 //MUI
@@ -149,7 +149,7 @@ export default function CustomizedSteppers() {
   const [activeStep, setActiveStep] = useState(0);
 
   const authContext = useContext(AuthContext);
-  const bookingContext = useContext(BookingContext);
+  // const bookingContext = useContext(BookingContext);
   const customAlertContext = useContext(CustomAlertContext);
 
   const steps = getSteps();
@@ -157,24 +157,24 @@ export default function CustomizedSteppers() {
   const location = useLocation();
 
   const handleNext = async () => {
+    const alertDelay = 2000;
     if (!authContext.user.role) {
-      const alertDelay = 2000;
-
-      customAlertContext.setAlert("authRequired", alertDelay);
-
-      setTimeout(() => {
-        if (location.pathname !== "/auth") {
-          // console.log("test");
-          history.push("/auth");
-        }
-      }, alertDelay);
-
-      return;
+      customAlertContext.setAlert(
+        "error",
+        "You have to login to continue...",
+        alertDelay
+      );
     }
+
+    setTimeout(() => {
+      if (location.pathname !== "/auth") history.push("/auth");
+    }, alertDelay);
+
+    return;
     //Check if schedule selected.
-    bookingContext.scheduleData.id
-      ? setActiveStep((prevActiveStep) => prevActiveStep + 1)
-      : alert("Please select a schedule!");
+    // bookingContext.scheduleData.id
+    //   ? setActiveStep((prevActiveStep) => prevActiveStep + 1)
+    //   : customAlertContext.setAlert("unselectedSchedule", alertDelay);
 
     //Check if seat/s selected
 

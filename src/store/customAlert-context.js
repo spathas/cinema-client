@@ -1,143 +1,60 @@
-import { createContext, useState, useEffect, useRef } from "react";
-import { useHistory } from "react-router-dom";
+import { createContext, useState } from "react";
 
-//MUI
-import Alert from "@material-ui/lab/Alert";
-import LinearProgress from "@material-ui/core/LinearProgress";
-
-//STYLE
-import { makeStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "40%",
-    position: "fixed",
-    zIndex: "1000",
-    top: "0",
-    left: "30%",
-    "& > * + *": {
-      marginTop: theme.spacing(2),
-    },
-  },
-}));
+import CustomAlert from "../components/utils/CustomAlert";
 
 //ENUM
-export const STATUSES = {
-  // Status styles: error, warning, info, success
-  authRequired: {
-    status: "warning",
-    message: "Please login to continue...",
-  },
-};
+export const STATUSES = ["success", "error", "warning", "info"];
 
 const CustomAlertContext = createContext({
-  alert: {},
-  setAlert: (message, timer) => {},
+  status: "",
+  message: "",
+  timer: "",
+  triggerValue: false,
+  setAlert: (status, message, timer, callback) => {},
+  setTrigger: (trigger) => {},
 });
 
 export const CustomAlertContextProvider = (props) => {
-  const [alertKey, setAlertKey] = useState("");
   const [status, setStatus] = useState("invalid value");
   const [message, setMessage] = useState("");
   const [timer, setTimer] = useState(0);
-  const [trigger, setTrigger] = useState(false);
-  const [progress, setProgress] = useState(1);
-  const [dateNow, setDateNow] = useState();
+  const [triggerValue, setTriggerValue] = useState(false);
 
-  const classes = useStyles();
-  const history = useHistory();
-  let firstRender = useRef(true);
-
-  // When use close alert is called
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-    } else {
-      switch (alertKey) {
-        // Authrization required functionality
-        case "authRequired": {
-          let timeout;
-          let interval;
-
-          if (trigger) {
-            interval = setInterval(() => {
-              let timestamp = Math.round(
-                ((Date.now() - dateNow) / timer) * 100
-              );
-              timestamp = timestamp + timestamp * 0.1 + 1; // To fix async delay i increase 10% the progress value
-              setProgress(timestamp);
-            }, timer / 100);
-            timeout = setTimeout(() => {
-              setTrigger(false);
-            }, timer);
-          }
-          if (!trigger) {
-            history.push("/auth");
-          }
-
-          return () => {
-            clearInterval(interval);
-            clearTimeout(timeout);
-          };
-        }
-        // Others functionalities
-        default:
-          return;
-      }
-    }
-  }, [timer, trigger, history, alertKey, progress, dateNow]);
-
-  const setAlert = (alertKey, timer) => {
+  const setAlert = (status, message, timer) => {
     //Check for correct status string
-    if (!(alertKey in STATUSES)) {
-      console.log("error");
-      const statuesKeys = Object.keys(STATUSES).toString();
+    if (!STATUSES.includes(status)) {
       throw new Error(
-        `Invalide status code please insert one of four values: ${statuesKeys}`
+        `Invalide status code please insert one of four values: ${status}`
       );
     } else {
-      let alertObj = STATUSES[alertKey];
-
-      setAlertKey(alertKey);
-      setStatus(alertObj.status);
-      setMessage(alertObj.message);
+      setStatus(status);
+      setMessage(message);
       setTimer(timer);
-      setTrigger(true);
-      setDateNow(Date.now());
+      setTriggerValue(true);
     }
   };
 
+  const setTrigger = (trigger) => {
+    return setTriggerValue(trigger);
+  };
+
+  console.log(status, message, timer, triggerValue);
+
   const contextValue = {
-    alert: {
-      status,
-      message,
-    },
+    status,
+    message,
+    timer,
+    triggerValue,
     setAlert,
+    setTrigger,
   };
 
   return (
     <CustomAlertContext.Provider value={contextValue}>
-      <>
-        {trigger && (
-          <div className={classes.root}>
-            <Alert
-              onClose={() => {
-                setTrigger(false);
-              }}
-              severity={status}
-            >
-              {message}
-            </Alert>
-            <LinearProgress
-              style={{ marginTop: "-4px" }}
-              color="secondary"
-              variant="determinate"
-              value={progress}
-            />
-          </div>
-        )}
-        {props.children}
-      </>
+      {triggerValue && (
+        <CustomAlert status={status} message={message} timer={timer} />
+      )}
+      {props.children}
     </CustomAlertContext.Provider>
   );
 };
