@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import ScheduleCardList from "./schedules/ScheduleCardList";
-import SeatsScreen from "./SeatsScreen";
+import SeatsScreen from "./seats/SeatsScreen";
 
 const MovieBookBody = (props) => {
   const [schedules, setSchedules] = useState([]);
@@ -28,7 +28,7 @@ const MovieBookBody = (props) => {
       {step === 1 && (
         <ScheduleCardList schedules={schedules} results={results} />
       )}
-      {step === 2 && <SeatsScreen />}
+      {step === 2 && <SeatsScreen schedules={schedules} />}
       {step === 3 && "Step3"}
     </>
   );

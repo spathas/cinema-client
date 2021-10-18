@@ -6,23 +6,33 @@ const BookingContext = createContext({
   seats: "",
   createdAt: "",
   setScheduleData: () => {},
+  setSeats: () => {},
+  deleteSeats: () => {},
 });
 
 export const BookingContextProvider = (props) => {
   const [schedule, setSchedule] = useState({});
-  const [seats, setSeats] = useState("");
-  const [createdAt, setCreateAt] = useState(new Date(Date.now()));
+  const [seats, setSeats] = useState([]);
 
   //Setters
   const setScheduleData = (data) => {
     setSchedule(data);
   };
 
+  const setSeat = (seat) => {
+    setSeats((prevState) => [...prevState, seat]);
+  };
+
+  const deleteSeats = (seat) => {
+    setSeats(seats.filter((s) => s !== seat));
+  };
+
   const contetxtValue = {
     scheduleData: schedule,
     seats,
-    createdAt,
     setScheduleData,
+    setSeat,
+    deleteSeats,
   };
 
   return (

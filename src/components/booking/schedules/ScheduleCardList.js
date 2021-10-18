@@ -17,13 +17,15 @@ const useStyles = makeStyles({
 export default function CardList(props) {
   const [pointer, setPointer] = useState(0);
   const [slideDirection, setSlideDirection] = useState("left");
-  const [clickedSchedule, setClickedSchedule] = useState({});
 
   const classes = useStyles();
   const schedules = props.schedules;
   const results = props.results;
 
   const bookingContext = useContext(BookingContext);
+  const [clickedSchedule, setClickedSchedule] = useState(
+    bookingContext.scheduleData
+  );
 
   useEffect(() => {
     bookingContext.setScheduleData(clickedSchedule);
