@@ -38,8 +38,6 @@ export const CustomAlertContextProvider = (props) => {
     return setTriggerValue(trigger);
   };
 
-  console.log(status, message, timer, triggerValue);
-
   const contextValue = {
     status,
     message,

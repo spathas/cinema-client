@@ -42,7 +42,13 @@ export default function SeatsScreen(props) {
     if (["open", "closed", "disabled"].some((arr) => col.includes(arr))) {
       for (let i = 0; i < col.length; i++) {
         const seatId = `${i + 1}${intex + indexPrefix}`;
-        iconList.push(<Seat key={seatId} id={seatId} status={col[i]} />);
+
+        //Check for selected seats by user
+        if (bookingContext.seats.includes(seatId)) {
+          iconList.push(<Seat key={seatId} id={seatId} status={"closed"} />);
+        } else {
+          iconList.push(<Seat key={seatId} id={seatId} status={col[i]} />);
+        }
       }
       return <SeatsColumn key={`${intex}0`}>{iconList}</SeatsColumn>;
     } else {
@@ -60,7 +66,7 @@ export default function SeatsScreen(props) {
       return displayColumn(col, intex);
     });
   };
-  // console.log(bookingContext.scheduleData);
+
   return (
     <Grid
       container

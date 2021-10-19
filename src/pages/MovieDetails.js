@@ -46,7 +46,7 @@ const BookingPage = () => {
   }, [movieId]);
 
   return (
-    <Box bgcolor="primary.main">
+    <Box bgcolor="primary.light">
       <Grid container direction="row">
         <Grid
           container

@@ -16,6 +16,7 @@ import Typography from "@material-ui/core/Typography";
 
 //COMPONETS
 import ModalBody from "./ModalBody";
+import FinishedScreen from "./confirmation/FinishedScreen";
 //CONTEXT
 import AuthContext from "../../store/auth-context";
 import BookingContext from "../../store/booking-context";
@@ -157,20 +158,44 @@ export default function CustomizedSteppers() {
   const location = useLocation();
 
   const handleNext = async () => {
-    if (!authContext.user.role) {
-      setAlertTrigger("auth");
-      return;
-    }
-    // Check if schedule selected.
-    if (bookingContext.scheduleData.id) {
+    const scheduleStep = () => {
+      if (!authContext.user.role) {
+        setAlertTrigger("auth");
+        return;
+      }
+      // Check if schedule selected.
+      if (bookingContext.scheduleData.id) {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      } else {
+        return setAlertTrigger("schedule");
+      }
+    };
+
+    const seatsStep = () => {
+      console.log(bookingContext);
+      // Check if seat/s selected
+      if (bookingContext.seats.length) {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      } else {
+        return setAlertTrigger("seats");
+      }
+    };
+
+    const bookingStep = async () => {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    } else {
-      return setAlertTrigger("schedule");
+      return;
+    };
+
+    switch (activeStep) {
+      case 0:
+        return scheduleStep();
+      case 1:
+        return seatsStep();
+      case 2:
+        return bookingStep();
+      default:
+        return;
     }
-
-    //Check if seat/s selected
-
-    //
   };
 
   const handleBack = () => {
@@ -178,7 +203,7 @@ export default function CustomizedSteppers() {
   };
 
   const handleReset = () => {
-    setActiveStep(0);
+    history.push("/");
   };
 
   //Alert handlers
@@ -189,7 +214,7 @@ export default function CustomizedSteppers() {
           <CustomAlert
             status={"error"}
             message={"Please login to continue..."}
-            timer={4000}
+            timer={2000}
             onPassAlertTime={onPassAlertTime}
             onCloseAlert={onCloseAlertHandler}
           />
@@ -199,6 +224,16 @@ export default function CustomizedSteppers() {
           <CustomAlert
             status={"info"}
             message={"Please select a schedule to continue..."}
+            timer={2000}
+            onPassAlertTime={onCloseAlertHandler}
+            onCloseAlert={onCloseAlertHandler}
+          />
+        );
+      case "seats":
+        return (
+          <CustomAlert
+            status={"info"}
+            message={"Please select at least one seat..."}
             timer={2000}
             onPassAlertTime={onCloseAlertHandler}
             onCloseAlert={onCloseAlertHandler}
@@ -235,8 +270,9 @@ export default function CustomizedSteppers() {
               <Typography color="primary" className={classes.instructions}>
                 All steps completed - your booking is ready.
               </Typography>
+              <FinishedScreen />
               <Button onClick={handleReset} className={classes.button}>
-                Reset
+                Home
               </Button>
             </div>
           ) : (

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import ScheduleCardList from "./schedules/ScheduleCardList";
+import ScheduleScreen from "./schedules/ScheduleScreen";
 import SeatsScreen from "./seats/SeatsScreen";
+import ConfirmationScreen from "./confirmation/ConfirmationScreen";
 
 const MovieBookBody = (props) => {
   const [schedules, setSchedules] = useState([]);
@@ -23,18 +24,15 @@ const MovieBookBody = (props) => {
       .catch((error) => console.log(error));
   }, [movieId]);
 
+  console.log(props.step);
+
   return (
     <>
-      {step === 1 && (
-        <ScheduleCardList schedules={schedules} results={results} />
-      )}
+      {step === 1 && <ScheduleScreen schedules={schedules} results={results} />}
       {step === 2 && <SeatsScreen schedules={schedules} />}
-      {step === 3 && "Step3"}
+      {step === 3 && <ConfirmationScreen />}
     </>
   );
 };
 
 export default MovieBookBody;
-
-// TODO: Parse user to booking context
-// TODO: Create second screen to chooce seats

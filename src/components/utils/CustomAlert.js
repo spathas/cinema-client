@@ -32,7 +32,6 @@ export const CustomAlert = (props) => {
     let value = 0;
     const interval = setInterval(() => {
       value += 1;
-      console.log("exec");
       setProgress(value);
       if (value >= 100) {
         clearInterval(itnerval);
