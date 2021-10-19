@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
 //MUI
@@ -19,7 +19,7 @@ import ModalBody from "./ModalBody";
 //CONTEXT
 import AuthContext from "../../store/auth-context";
 import BookingContext from "../../store/booking-context";
-import CustomAlertContext from "../../store/customAlert-context";
+import CustomAlert from "../utils/CustomAlert";
 
 //STYLES
 import { makeStyles, withStyles } from "@material-ui/core/styles";
@@ -147,34 +147,26 @@ function getStepContent(step) {
 export default function CustomizedSteppers() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
+  const [alertTrigger, setAlertTrigger] = useState("");
 
   const authContext = useContext(AuthContext);
-  // const bookingContext = useContext(BookingContext);
-  const customAlertContext = useContext(CustomAlertContext);
+  const bookingContext = useContext(BookingContext);
 
   const steps = getSteps();
   const history = useHistory();
   const location = useLocation();
 
   const handleNext = async () => {
-    const alertDelay = 2000;
     if (!authContext.user.role) {
-      customAlertContext.setAlert(
-        "error",
-        "You have to login to continue...",
-        alertDelay
-      );
+      setAlertTrigger("auth");
+      return;
     }
-
-    setTimeout(() => {
-      if (location.pathname !== "/auth") history.push("/auth");
-    }, alertDelay);
-
-    return;
-    //Check if schedule selected.
-    // bookingContext.scheduleData.id
-    //   ? setActiveStep((prevActiveStep) => prevActiveStep + 1)
-    //   : customAlertContext.setAlert("unselectedSchedule", alertDelay);
+    // Check if schedule selected.
+    if (bookingContext.scheduleData.id) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    } else {
+      return setAlertTrigger("schedule");
+    }
 
     //Check if seat/s selected
 
@@ -189,65 +181,112 @@ export default function CustomizedSteppers() {
     setActiveStep(0);
   };
 
+  //Alert handlers
+  const alertHandler = (status, message, timer, onPassAlertTime) => {
+    switch (alertTrigger) {
+      case "auth":
+        return (
+          <CustomAlert
+            status={"error"}
+            message={"Please login to continue..."}
+            timer={4000}
+            onPassAlertTime={onPassAlertTime}
+            onCloseAlert={onCloseAlertHandler}
+          />
+        );
+      case "schedule":
+        return (
+          <CustomAlert
+            status={"info"}
+            message={"Please select a schedule to continue..."}
+            timer={2000}
+            onPassAlertTime={onCloseAlertHandler}
+            onCloseAlert={onCloseAlertHandler}
+          />
+        );
+      default:
+        setAlertTrigger("");
+    }
+  };
+
+  const onPassAlertTime = () => {
+    setAlertTrigger("");
+    return location.pathname !== "/auth" ? history.push("/auth") : null;
+  };
+
+  const onCloseAlertHandler = () => {
+    setAlertTrigger("");
+  };
+
   return (
-    <div className={classes.root}>
-      <div>
-        {activeStep === steps.length ? (
-          <div>
-            <Typography color="primary" className={classes.instructions}>
-              All steps completed - your booking is ready.
-            </Typography>
-            <Button onClick={handleReset} className={classes.button}>
-              Reset
-            </Button>
-          </div>
-        ) : (
-          <div>
-            <Typography color="primary" className={classes.instructions}>
-              {getStepContent(activeStep)}
-            </Typography>
-            <ModalBody step={activeStep + 1} />
+    <>
+      {alertTrigger &&
+        alertHandler(
+          "error",
+          "Please login to continue...",
+          4000,
+          onPassAlertTime
+        )}
+
+      <div className={classes.root}>
+        <div>
+          {activeStep === steps.length ? (
             <div>
-              <Button
-                variant="outlined"
-                color="primary"
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                className={classes.button}
-              >
-                Back
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                className={classes.button}
-              >
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
+              <Typography color="primary" className={classes.instructions}>
+                All steps completed - your booking is ready.
+              </Typography>
+              <Button onClick={handleReset} className={classes.button}>
+                Reset
               </Button>
             </div>
-          </div>
-        )}
+          ) : (
+            <div>
+              <Typography color="primary" className={classes.instructions}>
+                {getStepContent(activeStep)}
+              </Typography>
+              <ModalBody step={activeStep + 1} />
+              <div>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  className={classes.button}
+                >
+                  Back
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNext}
+                  className={classes.button}
+                >
+                  {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+        <Stepper
+          style={{ background: "transparent" }}
+          alternativeLabel
+          activeStep={activeStep}
+          connector={<ColorlibConnector />}
+        >
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel
+                classes={{
+                  label: classes.label,
+                }}
+                StepIconComponent={ColorlibStepIcon}
+              >
+                {label}
+              </StepLabel>
+            </Step>
+          ))}
+        </Stepper>
       </div>
-      <Stepper
-        style={{ background: "transparent" }}
-        alternativeLabel
-        activeStep={activeStep}
-        connector={<ColorlibConnector />}
-      >
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel
-              classes={{
-                label: classes.label,
-              }}
-              StepIconComponent={ColorlibStepIcon}
-            >
-              {label}
-            </StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-    </div>
+    </>
   );
 }

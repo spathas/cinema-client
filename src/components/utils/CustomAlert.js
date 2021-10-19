@@ -1,11 +1,8 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 
 //MUI
 import Alert from "@material-ui/lab/Alert";
 import LinearProgress from "@material-ui/core/LinearProgress";
-
-//CONTEXTES
-import CustomAlertContext from "../../store/customAlert-context";
 
 //STYLE
 import { makeStyles } from "@material-ui/core/styles";
@@ -26,51 +23,71 @@ const useStyles = makeStyles((theme) => ({
 export const CustomAlert = (props) => {
   const [trigger, setTrigger] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [intervalExpired, setIntervalExpired] = useState(false);
+  const [closeClicked, setCloseClicked] = useState(false);
 
   const classes = useStyles();
-  const customAlertContext = useContext(CustomAlertContext);
-
-  //https://stackoverflow.com/questions/56442582/react-hooks-cant-perform-a-react-state-update-on-an-unmounted-component
-  let value = 0;
+  let itnerval;
   useEffect(() => {
-    const itnerval = setInterval(() => {
-      console.time("intervals");
+    let value = 0;
+    const interval = setInterval(() => {
       value += 1;
+      console.log("exec");
       setProgress(value);
       if (value >= 100) {
-        console.log("execute");
-        setTrigger(false);
-        customAlertContext.setTrigger(false);
         clearInterval(itnerval);
-        console.timeEnd("intervals");
+        setTrigger(false);
+        setIntervalExpired(true);
       }
-
-      return () => {};
     }, props.timer / 100);
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (intervalExpired && !closeClicked) {
+      props.onPassAlertTime();
+      setCloseClicked(false);
+      setTrigger(false);
+    }
+  }, [closeClicked, intervalExpired, props]);
+
+  const onCloseHandler = () => {
+    props.onCloseAlert();
+    setTrigger(false);
+    setCloseClicked(true);
+  };
+
+  const progressColorHandler = () => {
+    switch (props.status) {
+      case "error":
+        return "secondary";
+      case "success":
+        return "primary";
+      case "info":
+        return "primary";
+      case "warning":
+        return "primary";
+      default:
+        throw new Error(`Unknown status ${props.status}`);
+    }
+  };
 
   return (
     <>
       {trigger && (
         <div className={classes.root}>
-          <Alert
-            onClose={() => {
-              setTrigger(false);
-              customAlertContext.setTrigger(false);
-            }}
-            severity={props.status}
-          >
+          <Alert onClose={onCloseHandler} severity={props.status}>
             {props.message}
           </Alert>
           <LinearProgress
             style={{ marginTop: "-4px" }}
-            color="secondary"
+            color={progressColorHandler()}
             variant="determinate"
             value={progress}
           />
         </div>
       )}
-      {props.children}
     </>
   );
 };
