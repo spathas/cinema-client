@@ -27,19 +27,19 @@ const PaperLabel = (props) => {
 
   return (
     <Grid item>
-      <Box clone m={2} p={2} className={classes.bgcolor}>
+      <Box clone m={1} p={2} className={classes.bgcolor}>
         <Paper elevation={5}>
-          <Grid container spacing={1} alignItems="center" alignContent="center">
+          <Grid container spacing={0} alignItems="center" alignContent="center">
             <Grid item md={12}>
               <Typography
-                variant="h5"
+                variant="subtitle1"
                 color="primary"
                 style={{ display: "inline", marginRight: "1rem" }}
               >
                 {keyValue}:
               </Typography>
               <Typography
-                variant="h5"
+                variant="subtitle2"
                 color="primary"
                 style={{ display: "inline" }}
               >

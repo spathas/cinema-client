@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 
+//MUI
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -11,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Slide from "@material-ui/core/Slide";
 
+//STYLES
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({

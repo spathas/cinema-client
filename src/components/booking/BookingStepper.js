@@ -128,7 +128,7 @@ const useStyles = makeStyles((theme) => ({
 
 // Title of modal by step num.
 function getSteps() {
-  return ["Select schedule", "Create an ad group", "Create an ad"];
+  return ["Select schedule", "Select seats", "Finish with your booking"];
 }
 
 function getStepContent(step) {

@@ -28,6 +28,7 @@ export default function CardList(props) {
   );
 
   useEffect(() => {
+    console.log(clickedSchedule);
     bookingContext.setScheduleData(clickedSchedule);
   }, [bookingContext, clickedSchedule]);
 

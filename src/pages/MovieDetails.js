@@ -11,9 +11,20 @@ import MovieTrailerImage from "../components/movies/MovieTrailerImage";
 //COMPONETS
 import BookingModal from "../components/booking/BookingModal";
 
+//STYLES
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(3),
+  },
+}));
+
 const BookingPage = () => {
   const [movie, setMovie] = useState({});
   const [open, setOpen] = useState(false);
+
+  const classes = useStyles();
 
   const handleOpen = () => {
     setOpen(true);
@@ -42,8 +53,6 @@ const BookingPage = () => {
           item
           md={4}
           xl={4}
-          justifyContent="space-around"
-          alignContent="center"
           alignItems="center"
           direction="column"
         >
@@ -54,14 +63,6 @@ const BookingPage = () => {
               title={"Play Trailer"}
               trailer={movie.trailer}
             />
-          </Grid>
-          <Grid item>
-            <Button
-              onClick={handleOpen}
-              style={{ width: "24rem", fontSize: "1.5rem" }}
-            >
-              Book Now
-            </Button>
           </Grid>
         </Grid>
         <Grid container item md={8} xl={8} direction="column" spacing={2}>
@@ -75,6 +76,21 @@ const BookingPage = () => {
           <PaperLabel keyValue={"writers"} value={movie.writers} />
           <PaperLabel keyValue={"description"} value={movie.description} />
           <PaperLabel keyValue={"story"} value={movie.story} />
+        </Grid>
+      </Grid>
+      <Grid
+        container
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="flex-end"
+      >
+        <Grid item className={classes.button}>
+          <Button
+            onClick={handleOpen}
+            style={{ width: "24rem", fontSize: "1.5rem" }}
+          >
+            Book Now
+          </Button>
         </Grid>
       </Grid>
       <BookingModal
