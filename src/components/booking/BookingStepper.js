@@ -16,7 +16,7 @@ import Typography from "@material-ui/core/Typography";
 
 //COMPONETS
 import ModalBody from "./ModalBody";
-import FinishedScreen from "./confirmation/FinishedScreen";
+import FinishScreen from "./confirmation/FinishScreen";
 //CONTEXT
 import AuthContext from "../../store/auth-context";
 import BookingContext from "../../store/booking-context";
@@ -270,7 +270,7 @@ export default function CustomizedSteppers() {
               <Typography color="primary" className={classes.instructions}>
                 All steps completed - your booking is ready.
               </Typography>
-              <FinishedScreen />
+              <FinishScreen />
               <Button onClick={handleReset} className={classes.button}>
                 Home
               </Button>

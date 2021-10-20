@@ -13,9 +13,9 @@ import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    height: "30vh",
     flexGrow: 1,
     background: theme.palette.dark,
+    padding: "3rem",
   },
   divider: {
     background: theme.palette.divider,
@@ -53,6 +53,7 @@ function FinishedScreen() {
       .then((data) => {
         console.log(data);
         setBookingId(data);
+        console.log(bookingId);
       })
       .catch((error) => console.log(error));
   }, []);
