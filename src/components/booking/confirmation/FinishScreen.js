@@ -35,42 +35,64 @@ function FinishedScreen(props) {
   const seats = bookingContext.seats;
   const schedule = bookingContext.scheduleData.id;
   const price = bookingContext.scheduleData.hall.price;
-  const seatsSchema = { hall: bookingContext.scheduleData.hall.seatsSchema };
+  let seatsSchema = bookingContext.scheduleData.hall.seatsSchema;
 
-  console.log(
-    JSON.stringify({
-      schedule,
-      user,
-      token,
-      seats,
-      seatsSchema,
-    })
+  seatsSchema = seatsSchema.map((column) =>
+    column.map((row) => (row === "closed" ? (row = "disabled") : row))
   );
 
-  useEffect(() => {
-    const postBookingData = async () => {
-      const response = await fetch("http://localhost:3000/api/v1/bookings", {
-        method: "POST",
+  console.log(JSON.stringify({ hall: { seatsSchema } }));
+
+  const updateSchema = async () => {
+    const response = await fetch(
+      `http://localhost:3000/api/v1/schedules/${schedule}`,
+      {
+        method: "PATCH",
         body: JSON.stringify({
-          schedule,
-          user,
-          token,
-          seats,
-          seatsSchema,
+          hall: { seatsSchema },
         }),
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setBookingId(data.data.data.id);
-        props.onCheckBooking(true);
-      } else {
-        props.onCheckBooking(false);
       }
-    };
+    );
+
+    const data = await response.json();
+    if (response.ok) {
+      console.log(data);
+      return;
+    } else {
+      throw new Error("Error: ", data);
+    }
+  };
+
+  const postBookingData = async () => {
+    const response = await fetch("http://localhost:3000/api/v1/bookings", {
+      method: "POST",
+      body: JSON.stringify({
+        schedule,
+        user,
+        token,
+        seats,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      await updateSchema();
+      setBookingId(data.data.data.id);
+      props.onCheckBooking(true);
+    } else {
+      console.log("Error booking: ", data);
+      props.onCheckBooking(false);
+    }
+  };
+
+  useEffect(() => {
     postBookingData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

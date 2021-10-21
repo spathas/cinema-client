@@ -52,6 +52,7 @@ export default function SeatsScreen(props) {
       }
       return <SeatsColumn key={`${intex}0`}>{iconList}</SeatsColumn>;
     } else {
+      // Find hallway Column
       for (let i = 0; i < col.length; i++) {
         const seatId = `empty${i + 1}${intex}`;
         iconList.push(

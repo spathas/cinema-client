@@ -3,7 +3,7 @@ import { createContext, useState, useEffect } from "react";
 const AuthContext = createContext({
   user: {},
   token: "",
-  authExpires: new Date(Date.now()),
+  authExpires: "",
   isLogin: false,
   login: (user, authExpires) => {},
   logout: () => {},
@@ -46,9 +46,9 @@ export const AuthContextProvider = (props) => {
 
   const logoutHandler = () => {
     setUser({});
-    setAuthExpires(new Date(Date.now()));
+    setToken("");
+    setAuthExpires("");
     setIsLogin(false);
-    localStorage.clear();
   };
 
   const contetxtValue = {
