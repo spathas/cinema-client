@@ -47,29 +47,12 @@ function ConfirmationScreen() {
   };
 
   return (
-    <div
-      className={classes.ticket}
-      direction="rows"
-      justifyContent="flex-start"
-    >
-      <Grid
-        container
-        spacing={2}
-        md={12}
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Grid item container spacing={3} justifyContent="center">
-          <Grid item>
-            <Typography align="center" variant="h6">
-              {authContext.user.name}
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography align="center" variant="h6">
-              {authContext.user.email}
-            </Typography>
-          </Grid>
+    <div className={classes.ticket} direction="rows">
+      <Grid container spacing={2} justifyContent="center" alignItems="center">
+        <Grid item md={12}>
+          <Typography align="center" variant="h6">
+            {authContext.user.name}
+          </Typography>
         </Grid>
 
         <Grid item container md={6} spacing={2}>
@@ -133,6 +116,7 @@ function ConfirmationScreen() {
             <Typography align="center" variant="body2">
               You will receive your booking code by email to you email address
               <Box
+                component="span"
                 fontWeight="fontWeightMedium"
                 display="inline"
               >{` ${authContext.user.email} `}</Box>

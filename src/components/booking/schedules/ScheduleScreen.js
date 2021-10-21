@@ -33,6 +33,7 @@ export default function CardList(props) {
 
   const selectHandler = (schedule) => {
     setClickedSchedule(schedule);
+    console.log(schedule.hall.seatsSchema);
   };
 
   const cardItemsHandler = () => {

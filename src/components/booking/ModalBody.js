@@ -24,8 +24,6 @@ const MovieBookBody = (props) => {
       .catch((error) => console.log(error));
   }, [movieId]);
 
-  console.log(props.step);
-
   return (
     <>
       {step === 1 && <ScheduleScreen schedules={schedules} results={results} />}

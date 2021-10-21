@@ -9,24 +9,10 @@ import SeatsColumn from "./SeatsColumn";
 //CONTEXTES
 import BookingContext from "../../../store/booking-context";
 
-const convertDate = (date) => {
-  const innerDate = new Date(date);
-  const hours =
-    innerDate.getHours().toString().length < 2
-      ? "0" + innerDate.getHours().toString()
-      : innerDate.getHours();
-  const minutes =
-    innerDate.getMinutes().toString().length < 2
-      ? "0" + innerDate.getMinutes().toString()
-      : innerDate.getMinutes();
-
-  return `${hours}:${minutes}`;
-};
-
 export default function SeatsScreen(props) {
   const bookingContext = useContext(BookingContext);
-  const hallSchema = bookingContext.scheduleData.hall.seatsSchema;
 
+  const hallSchema = bookingContext.scheduleData.hall.seatsSchema;
   const hallNumber = bookingContext.scheduleData.hall.number;
   const hallType = bookingContext.scheduleData.hall.typeOfHall;
   const seatsQuantity = bookingContext.scheduleData.hall.seatsQuantity;
@@ -45,16 +31,37 @@ export default function SeatsScreen(props) {
 
         //Check for selected seats by user
         if (bookingContext.seats.includes(seatId)) {
-          iconList.push(<Seat key={seatId} id={seatId} status={"closed"} />);
+          iconList.push(
+            <Seat
+              key={seatId}
+              id={seatId}
+              status={"closed"}
+              indexPrefix={indexPrefix}
+            />
+          );
         } else {
-          iconList.push(<Seat key={seatId} id={seatId} status={col[i]} />);
+          iconList.push(
+            <Seat
+              key={seatId}
+              id={seatId}
+              status={col[i]}
+              indexPrefix={indexPrefix}
+            />
+          );
         }
       }
       return <SeatsColumn key={`${intex}0`}>{iconList}</SeatsColumn>;
     } else {
       for (let i = 0; i < col.length; i++) {
         const seatId = `empty${i + 1}${intex}`;
-        iconList.push(<Seat key={seatId} id={seatId} status={col[i]} />);
+        iconList.push(
+          <Seat
+            key={seatId}
+            id={seatId}
+            status={col[i]}
+            indexPrefix={indexPrefix}
+          />
+        );
       }
       indexPrefix -= 1;
       return <SeatsColumn key={`${intex + 10}0`}>{iconList}</SeatsColumn>;
@@ -78,12 +85,25 @@ export default function SeatsScreen(props) {
       <Grid item container md={3} direction="column">
         <PaperLabel keyValue={"Hall number"} value={hallNumber} />
         <PaperLabel keyValue={"Hall type"} value={hallType} />
-        <PaperLabel keyValue={"Price"} value={price} />
+        <PaperLabel keyValue={"Price"} value={`${price} per seat`} />
       </Grid>
       <Grid item container md={3} direction="column">
-        <PaperLabel keyValue={"quantity"} value={seatsQuantity} />
-        <PaperLabel keyValue={"Start at"} value={convertDate(screeningStart)} />
-        <PaperLabel keyValue={"End at"} value={convertDate(screeningEnd)} />
+        <PaperLabel
+          keyValue={"quantity"}
+          value={`${seatsQuantity} seating${seatsQuantity > 1 ? "s" : ""}`}
+        />
+        <PaperLabel
+          keyValue={"Starts at"}
+          value={
+            new Date(screeningStart).toLocaleString().toString().split(",")[1]
+          }
+        />
+        <PaperLabel
+          keyValue={"Ends at"}
+          value={
+            new Date(screeningEnd).toLocaleString().toString().split(",")[1]
+          }
+        />
       </Grid>
 
       <Grid item container md={6}>

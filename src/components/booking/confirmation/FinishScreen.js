@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FinishedScreen() {
+function FinishedScreen(props) {
   const [bookingId, setBookingId] = useState();
 
   const classes = useStyles();
@@ -30,54 +30,84 @@ function FinishedScreen() {
   const authContext = useContext(AuthContext);
   const bookingContext = useContext(BookingContext);
 
-  const userID = authContext.user._id;
+  const user = authContext.user._id;
+  const token = authContext.token;
   const seats = bookingContext.seats;
-  const scheduleID = bookingContext.scheduleData.id;
+  const schedule = bookingContext.scheduleData.id;
+  const price = bookingContext.scheduleData.hall.price;
+  const seatsSchema = { hall: bookingContext.scheduleData.hall.seatsSchema };
 
-  console.log(authContext);
-  //TODO Protected router crash because of crons and cookies
+  console.log(
+    JSON.stringify({
+      schedule,
+      user,
+      token,
+      seats,
+      seatsSchema,
+    })
+  );
+
   useEffect(() => {
-    fetch(
-      //queries -> movieid | sort by screeningStart (features from backend [utils-> featuresAPI])
-      `http://localhost:3000/api/v1/bookings`,
-      {
+    const postBookingData = async () => {
+      const response = await fetch("http://localhost:3000/api/v1/bookings", {
         method: "POST",
         body: JSON.stringify({
-          schedule: scheduleID,
-          user: userID,
-          seats: seats,
+          schedule,
+          user,
+          token,
+          seats,
+          seatsSchema,
         }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setBookingId(data.data.data.id);
+        props.onCheckBooking(true);
+      } else {
+        props.onCheckBooking(false);
       }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setBookingId(data);
-        console.log(bookingId);
-      })
-      .catch((error) => console.log(error));
+    };
+    postBookingData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const pluralTicket = seats.length > 1 ? "seats" : "seat";
   return (
-    <Grid
-      container
-      alignItems="center"
-      justifyContent="center"
-      className={classes.container}
-      spacing={3}
-    >
-      <Grid item md={6} align="center">
-        <Typography color="primary" variant="h6">
-          Booking id
-        </Typography>
-      </Grid>
-      <Grid item md={12}>
-        <Typography color="primary" variant="h5" align="center">
-          Booking id! I have to deploy the projects or fix the issue with cors
-          and cookies.
-        </Typography>
-      </Grid>
-    </Grid>
+    <>
+      {bookingId && (
+        <Grid
+          container
+          alignItems="center"
+          justifyContent="center"
+          className={classes.container}
+          spacing={3}
+        >
+          <Grid item md={6} align="center">
+            <Typography color="primary" variant="h6">
+              Booking id
+            </Typography>
+          </Grid>
+          <Grid item md={12}>
+            <Typography color="primary" variant="h5" align="center">
+              {bookingId}
+            </Typography>
+          </Grid>
+          <Grid item md={12}>
+            <Typography color="primary" variant="subtitle1" align="center">
+              Visit ticket office to recieve your {pluralTicket}. You will pay
+              the {pluralTicket} to the ticket office.
+            </Typography>
+            <Typography color="primary" variant="h5" align="center">
+              Price: {price}€
+            </Typography>
+          </Grid>
+        </Grid>
+      )}
+    </>
   );
 }
 

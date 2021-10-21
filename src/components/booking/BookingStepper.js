@@ -157,6 +157,15 @@ export default function CustomizedSteppers() {
   const history = useHistory();
   const location = useLocation();
 
+  const checkBookingHandler = (status) => {
+    if (status) {
+      setAlertTrigger("booking_pass");
+    } else {
+      setAlertTrigger("booking_error");
+      setActiveStep((prevActiveStep) => prevActiveStep - 2);
+    }
+  };
+
   const handleNext = async () => {
     const scheduleStep = () => {
       if (!authContext.user.role) {
@@ -172,7 +181,6 @@ export default function CustomizedSteppers() {
     };
 
     const seatsStep = () => {
-      console.log(bookingContext);
       // Check if seat/s selected
       if (bookingContext.seats.length) {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -202,7 +210,7 @@ export default function CustomizedSteppers() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
+  const handleHome = () => {
     history.push("/");
   };
 
@@ -239,6 +247,26 @@ export default function CustomizedSteppers() {
             onCloseAlert={onCloseAlertHandler}
           />
         );
+      case "booking_error":
+        return (
+          <CustomAlert
+            status={"error"}
+            message={"Please select another seatings."}
+            timer={2000}
+            onPassAlertTime={onCloseAlertHandler}
+            onCloseAlert={onCloseAlertHandler}
+          />
+        );
+      case "booking_pass":
+        return (
+          <CustomAlert
+            status={"success"}
+            message={"Your booking was successfully"}
+            timer={2000}
+            onPassAlertTime={onCloseAlertHandler}
+            onCloseAlert={onCloseAlertHandler}
+          />
+        );
       default:
         setAlertTrigger("");
     }
@@ -270,8 +298,8 @@ export default function CustomizedSteppers() {
               <Typography color="primary" className={classes.instructions}>
                 All steps completed - your booking is ready.
               </Typography>
-              <FinishScreen />
-              <Button onClick={handleReset} className={classes.button}>
+              <FinishScreen onCheckBooking={checkBookingHandler} />
+              <Button onClick={handleHome} className={classes.button}>
                 Home
               </Button>
             </div>

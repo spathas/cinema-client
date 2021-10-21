@@ -3,9 +3,11 @@ import { useHistory } from "react-router-dom";
 
 import { TextField, Button } from "@material-ui/core";
 
-import { makeStyles } from "@material-ui/core/styles";
-
+//CONTEXTES
 import AuthContext from "../../store/auth-context";
+
+//STYLES
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(() => ({
   gridFrom: {
@@ -50,7 +52,7 @@ export default function LoginForm(props) {
 
     if (response.ok) {
       const data = await response.json();
-      authContext.login(data.data.user, data.expires);
+      authContext.login(data.data.user, data.token, data.expires);
       history.push("/");
     } else {
       setForgotPassword(true);
