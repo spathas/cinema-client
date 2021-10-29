@@ -34,7 +34,7 @@ function FinishedScreen(props) {
   const token = authContext.token;
   const seats = bookingContext.seats;
   const schedule = bookingContext.scheduleData.id;
-  const price = bookingContext.scheduleData.hall.price;
+  const price = bookingContext.scheduleData.hall.price * seats.length;
   let seatsSchema = bookingContext.scheduleData.hall.seatsSchema;
 
   seatsSchema = seatsSchema.map((column) =>

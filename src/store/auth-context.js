@@ -9,9 +9,10 @@ const AuthContext = createContext({
   logout: () => {},
 });
 
-const initUser = JSON.parse(localStorage.getItem("user"));
-const initToken = JSON.parse(localStorage.getItem("token"));
-const initExpired = JSON.parse(localStorage.getItem("expireToken"));
+const initUser = JSON.parse(localStorage.getItem("user")) || {};
+const initToken = JSON.parse(localStorage.getItem("token")) || "";
+const initExpired =
+  JSON.parse(localStorage.getItem("expireToken")) || new Date(Date.now());
 
 export const AuthContextProvider = (props) => {
   const [user, setUser] = useState(initUser);
